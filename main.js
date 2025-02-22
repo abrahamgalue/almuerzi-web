@@ -1,3 +1,5 @@
+let mealsState = []
+
 const stringToHTML = (s) => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(s, 'text/html')
@@ -30,6 +32,9 @@ window.onload = () => {
 
   orderForm.onsubmit = (e) => {
     e.preventDefault()
+    const submit = document.getElementById('submit')
+    submit.setAttribute('disabled', true)
+    submit.value = 'Enviando...'
     const mealId = document.getElementById('meals-id')
     const mealIdValue = mealId.value
     if (!mealIdValue) {
@@ -48,12 +53,21 @@ window.onload = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(order)
-    }).then(x => console.log(x))
+    }).then(res => res.json())
+      .then(data => {
+        const renderedOrder = renderOrder(data, mealsState)
+        const ordersList = document.getElementById('orders-list')
+
+        ordersList.appendChild(renderedOrder)
+        submit.removeAttribute('disabled')
+        submit.value = 'Submit'
+      })
   }
 
   fetch('https://serverless-functions-abrahamgalue.vercel.app/meals')
     .then(res => res.json())
     .then(data => {
+      mealsState = data
       const mealsList = document.getElementById('meals-list')
       const submit = document.getElementById('submit')
       const listItems = data.map(renderItem)
