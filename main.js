@@ -34,6 +34,14 @@ window.onload = () => {
       meal_id: mealIdValue,
       user_id: 'chanchito triste'
     }
+
+    fetch('https://serverless-functions-abrahamgalue.vercel.app/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order)
+    }).then(x => console.log(x))
   }
 
   fetch('https://serverless-functions-abrahamgalue.vercel.app/meals')
