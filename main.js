@@ -18,6 +18,13 @@ const renderItem = (item) => {
   return element
 }
 
+const renderOrder = (order, meals) => {
+  const meal = meals.find(meal => meal._id === order.meal_id)
+  const element = stringToHTML(`<li data-id=${order._id}>${meal.name} - ${order.user_id}</li>`)
+
+  return element
+}
+
 window.onload = () => {
   const orderForm = document.getElementById('order')
 
@@ -53,5 +60,14 @@ window.onload = () => {
       mealsList.removeChild(mealsList.firstElementChild)
       listItems.forEach(e => mealsList.appendChild(e))
       submit.removeAttribute('disabled')
+      fetch('https://serverless-functions-abrahamgalue.vercel.app/orders')
+        .then(res => res.json())
+        .then(ordersData => {
+          const ordersList = document.getElementById('orders-list')
+          const listOrders = ordersData.map(orderData => renderOrder(orderData, data))
+
+          ordersList.removeChild(ordersList.firstElementChild)
+          listOrders.forEach(e => ordersList.appendChild(e))
+        })
     })
 }
