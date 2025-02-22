@@ -19,6 +19,23 @@ const renderItem = (item) => {
 }
 
 window.onload = () => {
+  const orderForm = document.getElementById('order')
+
+  orderForm.onsubmit = (e) => {
+    e.preventDefault()
+    const mealId = document.getElementById('meals-id')
+    const mealIdValue = mealId.value
+    if (!mealIdValue) {
+      alert('Debe seleccionar un plato')
+      return
+    }
+
+    const order = {
+      meal_id: mealIdValue,
+      user_id: 'chanchito triste'
+    }
+  }
+
   fetch('https://serverless-functions-abrahamgalue.vercel.app/meals')
     .then(res => res.json())
     .then(data => {
