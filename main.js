@@ -1,4 +1,5 @@
 let mealsState = []
+let ruta = 'login' // login, register, orders
 
 const stringToHTML = (s) => {
   const parser = new DOMParser()
@@ -27,7 +28,7 @@ const renderOrder = (order, meals) => {
   return element
 }
 
-window.onload = () => {
+const inicializarFormulario = () => {
   const orderForm = document.getElementById('order')
 
   orderForm.onsubmit = (e) => {
@@ -63,7 +64,9 @@ window.onload = () => {
         submit.value = 'Submit'
       })
   }
+}
 
+const inicializarDatos = () => {
   fetch('https://serverless-functions-abrahamgalue.vercel.app/meals')
     .then(res => res.json())
     .then(data => {
@@ -84,4 +87,9 @@ window.onload = () => {
           listOrders.forEach(e => ordersList.appendChild(e))
         })
     })
+}
+
+window.onload = () => {
+  // inicializarFormulario()
+  // inicializarDatos()
 }
