@@ -90,16 +90,23 @@ const inicializarDatos = () => {
 }
 
 window.onload = () => {
-  fetch('https://serverless-functions-abrahamgalue.vercel.app/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email: 'chanchito@feliz.com',
-      password: '123456'
+  const loginForm = document.getElementById('login-form')
+  loginForm.onsubmit = (e) => {
+    e.preventDefault()
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+
+    fetch('https://serverless-functions-abrahamgalue.vercel.app/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
     })
-  })
+  }
   // inicializarFormulario()
   // inicializarDatos()
 }
