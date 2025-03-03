@@ -89,7 +89,13 @@ const inicializarDatos = () => {
     })
 }
 
+const renderApp = () => {
+  const token = localStorage.getItem('token')
+  console.log('token', token)
+}
+
 window.onload = () => {
+  renderApp()
   const loginForm = document.getElementById('login-form')
   loginForm.onsubmit = (e) => {
     e.preventDefault()
@@ -105,7 +111,11 @@ window.onload = () => {
         email,
         password
       })
-    })
+    }).then(x => x.json())
+      .then(res => {
+        localStorage.setItem('token', res.token)
+        ruta = 'orders'
+      })
   }
   // inicializarFormulario()
   // inicializarDatos()
