@@ -99,7 +99,7 @@ const renderApp = () => {
 
 const renderOrders = () => {
   const ordersView = document.getElementById('orders-view')
-  document.getElementsByTagName('body')[0].innerHTML = ordersView.innerHTML
+  document.getElementById('app').innerHTML = ordersView.innerHTML
 
   inicializarFormulario()
   inicializarDatos()
@@ -107,7 +107,7 @@ const renderOrders = () => {
 
 const renderLogin = () => {
   const loginView = document.getElementById('login-view')
-  document.getElementsByTagName('body')[0].innerHTML = loginView.innerHTML
+  document.getElementById('app').innerHTML = loginView.innerHTML
 
   const loginForm = document.getElementById('login-form')
   loginForm.onsubmit = (e) => {
