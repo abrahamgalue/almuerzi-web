@@ -92,9 +92,17 @@ const inicializarDatos = () => {
 const renderApp = () => {
   const token = localStorage.getItem('token')
   if (token) {
-    const ordersView = document.getElementById('orders-view')
-    document.getElementsByTagName('body')[0].innerHTML = ordersView.innerHTML
+    return renderOrders()
   }
+  renderLogin()
+}
+
+const renderOrders = () => {
+  const ordersView = document.getElementById('orders-view')
+  document.getElementsByTagName('body')[0].innerHTML = ordersView.innerHTML
+
+  inicializarFormulario()
+  inicializarDatos()
 }
 
 const renderLogin = () => {
@@ -120,12 +128,11 @@ const renderLogin = () => {
       .then(res => {
         localStorage.setItem('token', res.token)
         ruta = 'orders'
+        renderOrders()
       })
   }
 }
 
 window.onload = () => {
   renderApp()
-  // inicializarFormulario()
-  // inicializarDatos()
 }
