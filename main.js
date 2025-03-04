@@ -1,4 +1,5 @@
 let mealsState = []
+let user = {}
 let ruta = 'login' // login, register, orders
 
 const stringToHTML = (s) => {
@@ -40,18 +41,20 @@ const inicializarFormulario = () => {
     const mealIdValue = mealId.value
     if (!mealIdValue) {
       alert('Debe seleccionar un plato')
+      submit.removeAttribute('disabled')
       return
     }
 
     const order = {
       meal_id: mealIdValue,
-      user_id: 'chanchito triste'
+      user_id: user._id
     }
 
     fetch('https://serverless-functions-abrahamgalue.vercel.app/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        authorization: localStorage.getItem('token')
       },
       body: JSON.stringify(order)
     }).then(res => res.json())
@@ -92,6 +95,7 @@ const inicializarDatos = () => {
 const renderApp = () => {
   const token = localStorage.getItem('token')
   if (token) {
+    user = JSON.parse(localStorage.getItem('user'))
     return renderOrders()
   }
   renderLogin()
@@ -128,6 +132,21 @@ const renderLogin = () => {
       .then(res => {
         localStorage.setItem('token', res.token)
         ruta = 'orders'
+        return res.token
+      })
+      .then(token => {
+        return fetch('https://serverless-functions-abrahamgalue.vercel.app/auth/me', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: token
+          }
+        })
+      })
+      .then(x => x.json())
+      .then(fetchedUser => {
+        localStorage.setItem('user', JSON.stringify(fetchedUser))
+        user = fetchedUser
         renderOrders()
       })
   }
